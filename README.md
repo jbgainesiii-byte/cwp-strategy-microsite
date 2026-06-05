@@ -1,72 +1,96 @@
-# Detroit AI Works CRM
+# CWP Strategy Microsite
 
-A lightweight outreach CRM for tracking small business website redesign prospects.
+Private strategy microsite for Detroit AI Works to present a repositioning strategy to Cleaning With Purpose.
 
-## What it does now
+This is not the public customer-facing Cleaning With Purpose website. It is a private single-page presentation site with anchor navigation for aligning the senior-friendly category, the Peace-of-Mind Home Visit offer, trust stack, pricing, family journey, visit summary workflow, launch roadmap, and Detroit AI Works build proposal.
 
-- Tracks prospects through a demo-first website sales pipeline
-- Stores prospect records in the shared Supabase database with a browser backup
-- Moves leads forward with quick stage buttons, owner fields, next steps, and last-contact dates
-- Imports and exports CSV files for Google Sheets workflows
-- Includes outreach scripts, follow-ups, rebuttals, discovery prompts, and package anchors
-- Turns richer Manus research into a 360 account workspace with offer angle, reviews, traffic, competitors, and conversion gaps
-- Highlights a separate no-website play for businesses with strong reviews but no owned website
+## Strategy Direction
 
-## Deploy on Netlify
+Cleaning With Purpose is repositioned from a general cleaning company to a senior-friendly home cleaning and family peace-of-mind service.
 
-This is a static site, so Netlify does not need a build step.
+Core idea:
 
-- Build command: leave blank
-- Publish directory: `.`
-
-## Supabase Table
-
-Create the `prospects` table in Supabase before using shared saves:
-
-```sql
-create table if not exists prospects (
-  id uuid primary key default gen_random_uuid(),
-  business_name text not null,
-  niche text,
-  city text,
-  contact_name text,
-  email text,
-  phone text,
-  website text,
-  demo_url text,
-  stage text default 'Found',
-  follow_up date,
-  score integer default 0,
-  quote text,
-  assigned_to text,
-  next_step text,
-  last_contacted date,
-  issue text,
-  notes text,
-  last_touched_by text,
-  created_at timestamptz default now(),
-  updated_at timestamptz default now()
-);
+```text
+Cleaning is how the service is delivered. Peace of mind is what the family buys.
 ```
 
-If the table already exists, run this safe update to add the new mini-Salesforce fields:
+Primary buyer: the adult child, caregiver, niece, nephew, or family member worried about an aging parent's home.
 
-```sql
-alter table prospects add column if not exists assigned_to text;
-alter table prospects add column if not exists next_step text;
-alter table prospects add column if not exists last_contacted date;
+Service recipient: the older adult living at home.
+
+## Stack
+
+- Vite
+- React
+- TypeScript
+- Tailwind CSS
+- Netlify-ready static build
+
+No Supabase, backend, authentication, paid APIs, or copyrighted templates are included.
+
+## Project Structure
+
+```text
+src/
+  components/          One focused component per presentation section
+  data/                Editable strategy, pricing, trust, journey, and roadmap copy
+  App.tsx              Page composition
+  index.css            Tailwind entry and global styles
+  main.tsx             React entry
+public/
+  assets/              Project images and static assets
 ```
 
-## Recommended Lead Sheet Columns
+Presentation copy is split across:
 
-Use these columns when importing leads from Google Sheets:
-
-```csv
-businessName,niche,city,contactName,email,phone,website,demoUrl,stage,followUp,score,quote,assignedTo,nextStep,lastContacted,issue,notes
+```text
+src/data/strategyContent.ts
+src/data/packages.ts
+src/data/trustStack.ts
+src/data/roadmap.ts
+src/data/journey.ts
 ```
 
-For Manus research, the CRM also understands these optional columns and stores them inside the account workspace:
+## Run Locally
 
-```csv
-businessSummary,services,serviceArea,reviewRating,reviewCount,reviewHighlights,monthlyVisitors,trafficTrend,trafficSources,trustSignals,conversionGaps,competitors,recommendedOffer,offerAngle,leadType
+```bash
+npm install
+npm run dev
 ```
+
+Then open the local URL Vite prints, usually:
+
+```text
+http://localhost:5173
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+The production build outputs to:
+
+```text
+dist/
+```
+
+## Netlify Deployment
+
+This repo includes `netlify.toml`:
+
+```toml
+[build]
+  command = "npm run build"
+  publish = "dist"
+```
+
+Connect the GitHub repo to Netlify and use the default build settings. No environment variables are required for this static microsite.
+
+## Editing Notes
+
+- Update strategy copy in the files inside `src/data/`.
+- Replace images in `public/assets/`.
+- Use `client-entry-email.md` as the send-off email after deploying the Netlify link.
+- Keep future backend, auth, database, and paid API work out of this phase unless the project scope changes.
