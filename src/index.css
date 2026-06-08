@@ -390,6 +390,7 @@ main aside,
 .supplier-section,
 .cost-section,
 .roadmap-section,
+.unlock-section,
 .compliance-section,
 .sources-section {
   padding: clamp(72px, 10vw, 132px) clamp(18px, 5vw, 72px);
@@ -401,6 +402,7 @@ main aside,
 .economics,
 .cost-section,
 .roadmap-section,
+.unlock-section,
 .sources-section {
   background: #fbf6ee;
 }
@@ -448,6 +450,7 @@ main aside,
 .supplier-checklist,
 .candidate-grid a,
 .cost-table article,
+.unlock-card,
 .guardrail-grid div {
   background: #fffdf8;
   border: 1px solid rgba(23, 33, 29, 0.12);
@@ -1641,6 +1644,211 @@ main aside,
   width: 34px;
 }
 
+.unlock-section {
+  background: #173c34;
+  color: #fff8eb;
+}
+
+.unlock-section .section-heading h2 {
+  color: #fff8eb;
+}
+
+.unlock-dashboard {
+  align-items: center;
+  background: rgba(255, 248, 235, 0.08);
+  border: 1px solid rgba(255, 248, 235, 0.14);
+  border-radius: 8px;
+  display: grid;
+  gap: 22px;
+  grid-template-columns: 220px minmax(0, 1fr);
+  margin-top: 42px;
+  padding: 24px;
+}
+
+.unlock-dashboard div {
+  border-right: 1px solid rgba(255, 248, 235, 0.16);
+  padding-right: 22px;
+}
+
+.unlock-dashboard span,
+.unlock-card-top span,
+.unlock-proof strong,
+.unlock-access strong {
+  color: #f2a56d;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.unlock-dashboard strong {
+  color: #fff8eb;
+  display: block;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 58px;
+  line-height: 1;
+  margin-top: 10px;
+}
+
+.unlock-dashboard p {
+  color: rgba(255, 248, 235, 0.82);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.unlock-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin-top: 18px;
+}
+
+.unlock-card {
+  color: #17211d;
+  display: flex;
+  flex-direction: column;
+  min-height: 430px;
+  padding: 22px;
+  transition:
+    border-color 180ms ease,
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.unlock-card.is-locked {
+  background: rgba(255, 248, 235, 0.07);
+  border-color: rgba(255, 248, 235, 0.14);
+  box-shadow: none;
+  color: #fff8eb;
+  opacity: 0.72;
+}
+
+.unlock-card.is-complete {
+  border-color: rgba(22, 114, 79, 0.55);
+  box-shadow:
+    0 18px 50px rgba(22, 114, 79, 0.1),
+    inset 0 0 0 2px rgba(22, 114, 79, 0.12);
+}
+
+.unlock-card-top {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.unlock-card-top svg {
+  color: #2f65d8;
+  flex: 0 0 auto;
+}
+
+.unlock-card.is-locked .unlock-card-top svg {
+  color: rgba(255, 248, 235, 0.56);
+}
+
+.unlock-card.is-complete .unlock-card-top svg {
+  color: #16724f;
+}
+
+.unlock-card h3 {
+  color: inherit;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 29px;
+  line-height: 1.05;
+  margin-top: 24px;
+}
+
+.unlock-card > p {
+  color: #4f5d56;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-top: 16px;
+}
+
+.unlock-card.is-locked > p {
+  color: rgba(255, 248, 235, 0.68);
+}
+
+.unlock-proof,
+.unlock-access {
+  border-top: 1px solid rgba(23, 33, 29, 0.1);
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 14px;
+}
+
+.unlock-card.is-locked .unlock-proof,
+.unlock-card.is-locked .unlock-access {
+  border-color: rgba(255, 248, 235, 0.14);
+}
+
+.unlock-proof span,
+.unlock-access span {
+  color: #4f5d56;
+  font-size: 13px;
+  line-height: 1.42;
+}
+
+.unlock-card.is-locked .unlock-proof span,
+.unlock-card.is-locked .unlock-access span {
+  color: rgba(255, 248, 235, 0.64);
+}
+
+.unlock-check {
+  align-items: center;
+  background: #f3ece0;
+  border-radius: 999px;
+  color: #173c34;
+  cursor: pointer;
+  display: flex;
+  font-size: 13px;
+  font-weight: 850;
+  gap: 10px;
+  justify-content: center;
+  margin-top: auto;
+  min-height: 44px;
+  padding: 0 14px;
+}
+
+.unlock-card.is-locked .unlock-check {
+  background: rgba(255, 248, 235, 0.1);
+  color: rgba(255, 248, 235, 0.58);
+  cursor: not-allowed;
+}
+
+.unlock-card.is-complete .unlock-check {
+  background: #dcf2e7;
+  color: #16724f;
+}
+
+.unlock-check input {
+  accent-color: #16724f;
+  height: 16px;
+  width: 16px;
+}
+
+.unlock-note {
+  align-items: flex-start;
+  background: rgba(255, 248, 235, 0.08);
+  border: 1px solid rgba(255, 248, 235, 0.14);
+  border-radius: 8px;
+  display: flex;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 22px;
+}
+
+.unlock-note svg {
+  color: #f2a56d;
+  flex: 0 0 auto;
+}
+
+.unlock-note p {
+  color: rgba(255, 248, 235, 0.78);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
 .compliance-section {
   background: #fffdf8;
 }
@@ -1799,7 +2007,8 @@ footer strong {
   .source-grid,
   .candidate-grid,
   .gate-grid,
-  .cost-table {
+  .cost-table,
+  .unlock-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1902,6 +2111,7 @@ footer strong {
   .supplier-section,
   .cost-section,
   .roadmap-section,
+  .unlock-section,
   .compliance-section,
   .sources-section,
   .recommendation,
@@ -1930,6 +2140,7 @@ footer strong {
   .candidate-grid,
   .gate-grid,
   .cost-table,
+  .unlock-grid,
   .guardrail-grid,
   .timeline,
   .source-grid {
@@ -1954,8 +2165,20 @@ footer strong {
   .cost-warning,
   .creator-note,
   .niche-intro,
-  .niche-decision {
+  .niche-decision,
+  .unlock-note {
     flex-direction: column;
+  }
+
+  .unlock-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .unlock-dashboard div {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 248, 235, 0.16);
+    padding-bottom: 18px;
+    padding-right: 0;
   }
 
   .image-band img {
@@ -2020,6 +2243,7 @@ footer strong {
   .supplier-section,
   .cost-section,
   .roadmap-section,
+  .unlock-section,
   .compliance-section,
   .sources-section,
   .recommendation,

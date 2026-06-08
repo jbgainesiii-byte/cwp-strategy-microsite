@@ -4,6 +4,7 @@ import {
   BadgeCheck,
   BarChart3,
   Boxes,
+  CheckCircle2,
   ChevronRight,
   CircleDollarSign,
   ClipboardCheck,
@@ -106,6 +107,13 @@ type GateItem = {
   label: string;
   pass: string;
   fail: string;
+};
+
+type FounderGate = {
+  title: string;
+  task: string;
+  proof: string;
+  unlock: string;
 };
 
 const metrics: Metric[] = [
@@ -648,6 +656,39 @@ const roadmap = [
   },
 ];
 
+const founderGates: FounderGate[] = [
+  {
+    title: "Offer gate",
+    task: "Choose one lead audience, one offer, one price hypothesis, and one compliance-safe promise.",
+    proof: "A one-page offer brief Nader would be comfortable sending to a supplier or creator.",
+    unlock: "Supplier quote script and first-call decision criteria.",
+  },
+  {
+    title: "Supplier gate",
+    task: "Complete the ClickNutra call and compare at least two backup quote targets.",
+    proof: "True landed cost, sample cost, shipping speed, documentation, and bundle handling written down.",
+    unlock: "Creator seeding plan and sample-order checklist.",
+  },
+  {
+    title: "Sample gate",
+    task: "Order the real customer experience before selling it.",
+    proof: "Photos, delivery timing, packaging notes, taste/use notes, and any supplier red flags.",
+    unlock: "UGC creator outreach and content prompts.",
+  },
+  {
+    title: "Creator proof gate",
+    task: "Collect enough raw creator content to see which hook creates buying intent.",
+    proof: "At least 15 usable clips, 5 strongest hooks, and comments or messages showing demand.",
+    unlock: "Soft-launch traffic and waitlist test.",
+  },
+  {
+    title: "Economics gate",
+    task: "Replace benchmark numbers with real supplier and launch numbers.",
+    proof: "Updated product cost, fees, shipping, expected order value, acquisition cost, and reorder plan.",
+    unlock: "Day-30 go, pause, or pivot decision.",
+  },
+];
+
 function currency(value: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -656,8 +697,21 @@ function currency(value: number) {
   }).format(value);
 }
 
+function publicAsset(path: string) {
+  return `${import.meta.env.BASE_URL}${path}`;
+}
+
 function App() {
   const [cac, setCac] = useState(84);
+  const [completedGates, setCompletedGates] = useState<boolean[]>(() => {
+    try {
+      const saved = window.localStorage.getItem("afterfive-founder-gates");
+      const parsed = saved ? JSON.parse(saved) : [];
+      return founderGates.map((_, index) => Boolean(parsed[index]));
+    } catch {
+      return founderGates.map(() => false);
+    }
+  });
 
   const model = useMemo(() => {
     const singleAov = 55;
@@ -678,6 +732,27 @@ function App() {
     };
   }, [cac]);
 
+  const completedGateCount = completedGates.filter(Boolean).length;
+
+  function toggleGate(index: number) {
+    const isUnlocked = index === 0 || completedGates[index - 1];
+    if (!isUnlocked) return;
+
+    setCompletedGates((current) => {
+      const next = [...current];
+      next[index] = !next[index];
+
+      for (let laterIndex = index + 1; laterIndex < next.length; laterIndex += 1) {
+        if (!next[laterIndex - 1]) {
+          next[laterIndex] = false;
+        }
+      }
+
+      window.localStorage.setItem("afterfive-founder-gates", JSON.stringify(next));
+      return next;
+    });
+  }
+
   return (
     <div className="site-shell">
       <header className="topbar">
@@ -694,6 +769,7 @@ function App() {
           <a href="#suppliers">Sourcing</a>
           <a href="#marketing">Marketing</a>
           <a href="#roadmap">Roadmap</a>
+          <a href="#gates">Gates</a>
         </nav>
       </header>
 
@@ -722,7 +798,7 @@ function App() {
               <span>ClickNutra first call</span>
             </div>
             <img
-              src="/nader-bazzi/afterfive-product-concept.png"
+              src={publicAsset("nader-bazzi/afterfive-product-concept.png")}
               alt="Afterfive supplement product concept with pre-workout, protein, and bundle box"
             />
             <div className="routine-strip" aria-label="Product routine">
@@ -908,7 +984,7 @@ function App() {
 
         <section className="image-band" aria-label="Target customer moment">
           <img
-            src="/nader-bazzi/afterwork-training-moment.png"
+            src={publicAsset("nader-bazzi/afterwork-training-moment.png")}
             alt="Woman preparing for an after-work strength training session"
           />
           <div>
@@ -1266,6 +1342,81 @@ function App() {
                 <p>{item.body}</p>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="unlock-section" id="gates">
+          <div className="section-heading">
+            <p className="eyebrow">Founder gate system</p>
+            <h2>Unlock the next move only after the last proof point is done.</h2>
+          </div>
+          <div className="unlock-dashboard">
+            <div>
+              <span>Progress</span>
+              <strong>
+                {completedGateCount}/{founderGates.length}
+              </strong>
+            </div>
+            <p>
+              This does not hide the strategy. It keeps the execution disciplined. Each gate opens
+              the next operating step only after Nader has proof, not just excitement.
+            </p>
+          </div>
+          <div className="unlock-grid">
+            {founderGates.map((gate, index) => {
+              const isUnlocked = index === 0 || completedGates[index - 1];
+              const isComplete = completedGates[index];
+
+              return (
+                <article
+                  className={[
+                    "unlock-card",
+                    isUnlocked ? "is-unlocked" : "is-locked",
+                    isComplete ? "is-complete" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  key={gate.title}
+                >
+                  <div className="unlock-card-top">
+                    <span>Gate {index + 1}</span>
+                    {isComplete ? (
+                      <CheckCircle2 size={22} />
+                    ) : isUnlocked ? (
+                      <BadgeCheck size={22} />
+                    ) : (
+                      <LockKeyhole size={22} />
+                    )}
+                  </div>
+                  <h3>{gate.title}</h3>
+                  <p>{gate.task}</p>
+                  <div className="unlock-proof">
+                    <strong>Proof required</strong>
+                    <span>{gate.proof}</span>
+                  </div>
+                  <div className="unlock-access">
+                    <strong>{isUnlocked ? "Access" : "Locked"}</strong>
+                    <span>{isUnlocked ? gate.unlock : "Complete the previous gate first."}</span>
+                  </div>
+                  <label className="unlock-check">
+                    <input
+                      type="checkbox"
+                      checked={isComplete}
+                      disabled={!isUnlocked}
+                      onChange={() => toggleGate(index)}
+                    />
+                    <span>{isComplete ? "Completed" : isUnlocked ? "Mark complete" : "Locked"}</span>
+                  </label>
+                </article>
+              );
+            })}
+          </div>
+          <div className="unlock-note">
+            <LockKeyhole size={22} />
+            <p>
+              This is a local progress tool, not a password wall. It saves completion status in the
+              browser so the report becomes a guided operating checklist during the 30-day sprint.
+            </p>
           </div>
         </section>
 
